@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kimya Resfebe Oyunu — v3</title>
+<style>
+  html,body{height:100%;margin:0}
+  body{font-family:Arial,Helvetica,sans-serif;background-color:#001b26;
+    background-image: linear-gradient(180deg, rgba(0,27,34,0.92), rgba(0,43,50,0.92)), url('data:image/svg+xml;utf8,%0A%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221200%22%20height%3D%22800%22%20viewBox%3D%220%200%201200%20800%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cpattern%20id%3D%22labPattern%22%20width%3D%22240%22%20height%3D%22240%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%22240%22%20height%3D%22240%22%20fill%3D%22%23012933%22/%3E%0A%20%20%20%20%20%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%2338d6e2%22%20stroke-opacity%3D%220.12%22%20stroke-width%3D%222%22%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M20%20200%20C50%20150%2C%20120%20150%2C%20150%20200%22%20/%3E%0A%20%20%20%20%20%20%20%20%3Crect%20x%3D%2230%22%20y%3D%2240%22%20width%3D%2250%22%20height%3D%22140%22%20rx%3D%228%22%20/%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M90%2070%20C110%2040%2C%20170%2040%2C%20190%2070%22%20/%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22210%22%20cy%3D%22190%22%20r%3D%2222%22%20/%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M180%2020%20L210%2020%20L210%2050%22%20/%3E%0A%20%20%20%20%20%20%3C/g%3E%0A%20%20%20%20%20%20%3Cg%20fill%3D%22%2338d6e2%22%20fill-opacity%3D%220.06%22%3E%0A%20%20%20%20%20%20%20%20%3Cellipse%20cx%3D%2260%22%20cy%3D%2260%22%20rx%3D%2228%22%20ry%3D%2212%22%20/%3E%0A%20%20%20%20%20%20%20%20%3Cellipse%20cx%3D%22180%22%20cy%3D%22140%22%20rx%3D%2236%22%20ry%3D%2216%22%20/%3E%0A%20%20%20%20%20%20%3C/g%3E%0A%20%20%20%20%20%20%3Cg%20fill%3D%22%2338d6e2%22%20fill-opacity%3D%220.06%22%20font-size%3D%2222%22%20font-family%3D%22Arial%22%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%2212%22%20y%3D%22220%22%3EH%E2%82%82O%3C/text%3E%0A%20%20%20%20%20%20%20%20%3Ctext%20x%3D%22120%22%20y%3D%2240%22%3ENaCl%3C/text%3E%0A%20%20%20%20%20%20%3C/g%3E%0A%20%20%20%20%3C/pattern%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22url%28%23labPattern%29%22%20/%3E%0A%3C/svg%3E%0A');
+    background-size: cover, 220px 220px; display:flex; align-items:center; justify-content:center; padding:20px;}
+  .card{max-width:980px;width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));padding:28px;border-radius:14px;color:#eafdfc;position:relative;box-shadow:0 14px 40px rgba(0,0,0,0.6);}
+  h1{margin:0 0 6px 0;color:#bff7f0} .lead{color:#d8f6f2;margin-bottom:12px}
+  .meta{opacity:0.95;margin-bottom:18px}
+  .controls{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+  #score,#timer{background:rgba(0,0,0,0.28);padding:8px 12px;border-radius:10px;font-weight:700}
+  #startBtn{margin-left:auto;background:#38d6e2;border:none;color:#002026;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+  .resfebe{background:#ffffff;padding:14px;border-radius:10px;color:#002b32;font-size:18px;margin:12px 0}
+  .answers button{display:block;width:100%;margin:8px 0;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:16px}
+  .message{min-height:22px;margin-top:10px;color:#bff3e6}
+  #leaderboard{margin-top:14px;color:#dff7f1;text-align:left}
+  footer{position:absolute;left:28px;bottom:12px;font-size:12px;opacity:0.85}
+  .hidden{display:none}
+  @media(max-width:600px){.resfebe{font-size:16px;padding:12px}.card{padding:16px}}
+</style>
+</head>
+<body>
+  <div class="card" id="page-intro">
+    <h1>Kimya Resfebe Oyunu</h1>
+    <div class="lead">Bu web sitesi, TÜBİTAK 4006-A Bilim Fuarı kapsamında hazırlanmış bir eğitim materyalidir. Türkiye’nin dört bir yanındaki öğretmen ve öğrencilerin kimya öğrenimini eğlenceli hale getirmek için geliştirilmiştir. Resfebe temelli bu uygulama, kavramları sembollerle öğretmeyi amaçlar.</div>
+    <div class="meta">
+      <div><strong>Danışman Öğretmen:</strong> Zehra Taşyürek</div>
+      <div><strong>Öğrenciler:</strong> Pınar Söküt, Zeynep Ayan, Umut Gökçe, Celil Arda Uçar</div>
+    </div>
+    <h3>Resfebe Nedir?</h3>
+    <p>Resfebe, kelime, harf, emoji veya sembollerle gizlenmiş bir kelimenin ya da kavramın çözülmeye çalışıldığı eğlenceli bir kelime oyunudur. Amaç, verilen görsel ve sembolleri doğru şekilde birleştirip gizli terimi bulmaktır.</p>
+    <p>Örnek: 🐎 + kı = Atkı</p>
+    <div style="display:flex;justify-content:flex-end;margin-top:18px">
+      <button id="introStart" style="background:#38d6e2;border:none;color:#002026;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer">Anladım, Oyuna Başla</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="page-game">
+    <h1>Kimya Resfebe — Oyun</h1>
+    <div class="meta">Süre: <strong>30 sn</strong> — Her doğru cevap kalan süreye göre bonus puan verilir (maks 6 puan/soru).</div>
+    <div class="controls">
+      <div id="score">Skor: 0</div>
+      <div id="timer">Süre: 30 sn</div>
+      <button id="startBtn">Oyunu Başlat</button>
+    </div>
+    <div class="resfebe" id="resfebe">Resfebe burada gözükecek.</div>
+    <div class="answers" id="answers"></div>
+    <div class="message" id="message"></div>
+    <div id="leaderboard"></div>
+    <footer>© Kimya Resfebe - Eğitim Amaçlı · TÜBİTAK 4006-A Bilim Fuarı</footer>
+  </div>
+
+  <audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+
+<script>
+const QUESTIONS = [{"soru": "♟️ - P", "cevaplar": ["Proton", "Anyon", "İyon", "Katyon"], "dogru": "İyon"}, {"soru": "🤚 + ┬─┬ - A", "cevaplar": ["Elmas", "Kristal", "Cam", "Karbon"], "dogru": "Elmas"}, {"soru": "🎸 - gitar + N", "cevaplar": ["Elektron", "Proton", "Nötron", "Anyon"], "dogru": "Elektron"}, {"soru": "K + 🐴 + I", "cevaplar": ["Katı", "Gaz", "Sıvı", "Buhar"], "dogru": "Katı"}, {"soru": "6️⃣ + N", "cevaplar": ["Azot", "Altın", "Gümüş", "Kükürt"], "dogru": "Altın"}, {"soru": "❄️ + B + 🔟", "cevaplar": ["Karbon", "Azot", "Neon", "Bor"], "dogru": "Karbon"}, {"soru": "🔥 + O", "cevaplar": ["Yanma", "Donma", "Kaynama", "Buharlaşma"], "dogru": "Yanma"}, {"soru": "K + 🐎 + Y + 🔟", "cevaplar": ["Katyon", "Anyon", "İyon", "Proton"], "dogru": "Katyon"}, {"soru": "📡 - ten + Y + 🔟", "cevaplar": ["Anyon", "Katyon", "Elektron", "Proton"], "dogru": "Anyon"}, {"soru": "🦗 - ge + dek", "cevaplar": ["Çekirdek", "Elektron", "Proton", "Nötron"], "dogru": "Çekirdek"}, {"soru": "👨🏻‍🦲 + win", "cevaplar": ["Kelvin", "Joule", "Newton", "Pascal"], "dogru": "Kelvin"}, {"soru": "🧚 + Y + 🌿", "cevaplar": ["Periyot", "Element", "Atom", "Katman"], "dogru": "Periyot"}, {"soru": "♻️", "cevaplar": ["Geri Dönüşüm", "Reaksiyon", "Kimyasal Denge", "Devir"], "dogru": "Geri Dönüşüm"}, {"soru": "🔴 + 🩸", "cevaplar": ["Alkan", "Alken", "Alkin", "Asit"], "dogru": "Alkan"}, {"soru": "K + 🔴 + 🌙", "cevaplar": ["Kalay", "Karbon", "Kobalt", "Kalsiyum"], "dogru": "Kalay"}, {"soru": "🤚 + ek + TR + 🔟 + ☁️ + u", "cevaplar": ["Elektron Bulutu", "Elektrik Yükü", "İyonik Bağ", "Elektron Denizi"], "dogru": "Elektron Bulutu"}, {"soru": "🎸 - gitar + 🐘", "cevaplar": ["Elektrofil", "Nükleofil", "Katyon", "Anyon"], "dogru": "Elektrofil"}, {"soru": "F + 🌿 + 🔟", "cevaplar": ["Foton", "Florin", "Fosfor", "Formül"], "dogru": "Foton"}, {"soru": "🇨🇳 + Ko", "cevaplar": ["Çinko", "Çinli", "Kobalt", "Karbon"], "dogru": "Çinko"}, {"soru": "Kr + 🧵 + t + 🔟", "cevaplar": ["Kripton", "Krom", "Kristal", "Kobalt"], "dogru": "Kripton"}, {"soru": "Re + 🔴 + s + ♟️ - p", "cevaplar": ["Reaksiyon", "Redoks", "İyonlaşma", "Polimer"], "dogru": "Reaksiyon"}, {"soru": "♟️ - P + ik + B + 🕸️", "cevaplar": ["İyonik Bağ", "Kovalent Bağ", "Metalik Bağ", "Hidrojen Bağı"], "dogru": "İyonik Bağ"}, {"soru": "🔴 + 🏹 + s", "cevaplar": ["Redoks", "Reaksiyon", "Proton", "Katot"], "dogru": "Redoks"}, {"soru": "K + 🐎 + 🌿", "cevaplar": ["Katot", "Anot", "Elektrot", "Katyon"], "dogru": "Katot"}, {"soru": "An + 🌿", "cevaplar": ["Anot", "Anyon", "Atom", "Asit"], "dogru": "Anot"}, {"soru": "M + 🥩 + an", "cevaplar": ["Metan", "Metanol", "Etan", "Metil"], "dogru": "Metan"}, {"soru": "K + 🥩 + 🔟", "cevaplar": ["Keton", "Katı", "Katyon", "Kükürt"], "dogru": "Keton"}, {"soru": "Ne + 🔟", "cevaplar": ["Neon", "Neonat", "Nehir", "Nikel"], "dogru": "Neon"}, {"soru": "Ni + 🦲", "cevaplar": ["Nikel", "Nitrat", "Nitrik", "Nişasta"], "dogru": "Nikel"}, {"soru": "İy + 🌿", "cevaplar": ["İyot", "İyon", "İyileşme", "İyelik"], "dogru": "İyot"}, {"soru": "Ent + 🔴 + π", "cevaplar": ["Entalpi", "Entropi", "Enerji", "Enzim"], "dogru": "Entalpi"}, {"soru": "🤚 + ek + TR + 🔟 🌊 + i", "cevaplar": ["Elektron Denizi", "Elektron Bulutu", "İyonik Bağ", "Metalik Bağ"], "dogru": "Elektron Denizi"}, {"soru": "🎈 + j + 💅🏻", "cevaplar": ["Balonjoje", "Baloncuk", "Baryum", "Beher"], "dogru": "Balonjoje"}, {"soru": "🐘 + tre + 🧾 + ı", "cevaplar": ["Filtre Kağıdı", "Pipet", "Büret", "Huni"], "dogru": "Filtre Kağıdı"}, {"soru": "3 🌙 + ⚪", "cevaplar": ["Üç Ayak", "Aytaşı", "Üçgen", "Üçlü Bağ"], "dogru": "Üç Ayak"}, {"soru": "pH + 🚝 - o + e", "cevaplar": ["pH metre", "Termometre", "Voltmetre", "Barometre"], "dogru": "pH metre"}, {"soru": "Kriy + 🌿 - t🧪", "cevaplar": ["Kriyotüp", "Kristal", "Kriyostat", "Kromatografi"], "dogru": "Kriyotüp"}, {"soru": "🧊 + 🛁 + su", "cevaplar": ["Buz Banyosu", "Soğutucu", "Erime", "Donma"], "dogru": "Buz Banyosu"}, {"soru": "✋🏻 + ek + TR + 🌿 + V + 🎣 + jı", "cevaplar": ["Elektrot Voltajı", "Elektron Denizi", "Elektrik Alanı", "Elektroliz"], "dogru": "Elektrot Voltajı"}, {"soru": "bür + 🥩", "cevaplar": ["Büret", "Pipet", "Balonjoje", "Beher"], "dogru": "Büret"}, {"soru": "π + p + 🥩", "cevaplar": ["Pipet", "Büret", "Pipol", "Beher"], "dogru": "Pipet"}, {"soru": "🥚🔥 → 🍳", "cevaplar": ["Kimyasal Değişim", "Fiziksel Değişim", "Donma", "Çözünme"], "dogru": "Kimyasal Değişim"}, {"soru": "💧 + 🔥 → ☁️", "cevaplar": ["Buharlaşma", "Yoğuşma", "Erime", "Süblimleşme"], "dogru": "Buharlaşma"}, {"soru": "D + 🔟 + ma", "cevaplar": ["Donma", "Buharlaşma", "Kaynama", "Erime"], "dogru": "Donma"}, {"soru": "🐎 + om y + 🐝 + ☕ - y + pı", "cevaplar": ["Atom Yarıçapı", "Atom Ağırlığı", "Atom Altı Parçacık", "Atom Çekirdeği"], "dogru": "Atom Yarıçapı"}, {"soru": "🐎 + omik K + 🐎 + ı", "cevaplar": ["Atomik Katı", "Katyon", "Metal", "Alaşım"], "dogru": "Atomik Katı"}, {"soru": "🐎 + om", "cevaplar": ["Atom", "Anyon", "Katyon", "Proton"], "dogru": "Atom"}, {"soru": "Di - 👮🏻‍♀️ - is", "cevaplar": ["Dipol", "Disodyum", "Diyot", "Difüzyon"], "dogru": "Dipol"}, {"soru": "🎸 - gitar + N + ⚪ + anı", "cevaplar": ["Elektron Alanı", "Elektron Enerjisi", "Elektron Bulutu", "Elektrik Akımı"], "dogru": "Elektron Alanı"}, {"soru": "🏹 + t + 🥩", "cevaplar": ["Oktet", "Katet", "Katalizör", "Etken"], "dogru": "Oktet"}];
+
+// page elements
+const pageIntro = document.getElementById('page-intro');
+const pageGame = document.getElementById('page-game');
+const introStart = document.getElementById('introStart');
+const startBtn = document.getElementById('startBtn');
+const resfebeDiv = document.getElementById('resfebe');
+const answersDiv = document.getElementById('answers');
+const messageDiv = document.getElementById('message');
+const scoreDiv = document.getElementById('score');
+const timerDiv = document.getElementById('timer');
+const leaderboardDiv = document.getElementById('leaderboard');
+const correctSound = document.getElementById('correctSound');
+const wrongSound = document.getElementById('wrongSound');
+
+let questions = JSON.parse(JSON.stringify(QUESTIONS)); // deep copy
+let current = 0, score = 0, timer = null, timeLeft = 30;
+
+// utility shuffles
+function shuffleArray(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function shuffledOptions(options){ const copy = options.slice(); return shuffleArray(copy); }
+
+// intro -> game
+introStart.onclick = ()=>{
+  pageIntro.classList.add('hidden');
+  pageGame.classList.remove('hidden');
+  // prepare questions
+  questions = shuffleArray(questions);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+};
+
+startBtn.onclick = ()=>{
+  startBtn.disabled = true;
+  startBtn.style.opacity = 0.8;
+  showQuestion();
+};
+
+function showQuestion(){
+  clearInterval(timer);
+  messageDiv.textContent = '';
+  timeLeft = 30;
+  updateTimer();
+  if(current >= questions.length){ endGame(); return; }
+  const q = questions[current];
+  resfebeDiv.textContent = `${current+1}-) Resfebe: ${q.soru}`;
+  answersDiv.innerHTML = '';
+  const opts = shuffledOptions(q.cevaplar);
+  opts.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.onclick = ()=> checkAnswer(opt, btn, q.dogru);
+    answersDiv.appendChild(btn);
+  });
+  timer = setInterval(()=>{
+    timeLeft--; updateTimer();
+    if(timeLeft <= 0){ clearInterval(timer); messageDiv.textContent='⏰ Süre doldu!'; wrongSound.play(); current++; setTimeout(showQuestion,900); }
+  },1000);
+}
+
+function updateTimer(){ timerDiv.textContent = `Süre: ${timeLeft} sn`; }
+
+function checkAnswer(answer, btn, correct){
+  if(answer === correct){
+    btn.style.background='#00FF94'; btn.style.transform='scale(1.03)';
+    messageDiv.textContent='Tebrikler! Doğru cevap ✅'; correctSound.play();
+    score += Math.ceil(timeLeft/5);
+  } else {
+    btn.style.background='#FF4C4C'; btn.style.transform='scale(1.03)';
+    messageDiv.textContent='Yanlış cevap ❌'; wrongSound.play();
+  }
+  scoreDiv.textContent = `Skor: ${score}`;
+  clearInterval(timer); current++; setTimeout(showQuestion,900);
+}
+
+function endGame(){
+  resfebeDiv.textContent='🎉 Tebrikler! Tüm soruları tamamladınız!';
+  answersDiv.innerHTML=''; messageDiv.innerHTML = `Toplam Skorunuz: <strong>${score}</strong> (maks: ${questions.length*6})`;
+  saveScore(score); showLeaderboard();
+  startBtn.disabled=false; startBtn.style.opacity=1; startBtn.textContent='Tekrar Oyna';
+  current=0; score=0;
+}
+
+function saveScore(newScore){
+  let scores = JSON.parse(localStorage.getItem('kimyaResfebeScores')||'[]');
+  const now = new Date().toLocaleString('tr-TR');
+  scores.push({puan:newScore,tarih:now});
+  scores.sort((a,b)=>b.puan-a.puan);
+  scores = scores.slice(0,5);
+  localStorage.setItem('kimyaResfebeScores', JSON.stringify(scores));
+}
+
+function showLeaderboard(){
+  let scores = JSON.parse(localStorage.getItem('kimyaResfebeScores')||'[]');
+  if(scores.length===0) return;
+  let html = "<h3>📊 En Yüksek Skorlar</h3><ol>";
+  scores.forEach(s=> html += `<li>${s.tarih} → ${s.puan} puan</li>`);
+  html += "</ol>"; leaderboardDiv.innerHTML = html;
+}
+</script>
+</body>
+</html>
