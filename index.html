@@ -101,7 +101,7 @@ startBtn.onclick = ()=>{
 function showQuestion(){
   clearInterval(timer);
   messageDiv.textContent = '';
-  timeLeft = 30;
+  timeLeft = 40;
   updateTimer();
   if(current >= questions.length){ endGame(); return; }
   const q = questions[current];
